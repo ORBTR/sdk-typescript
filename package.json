@@ -16,7 +16,7 @@
     },
     "./package.json": "./package.json"
   },
-  "files": ["dist", "LICENSE", "README.md", "CHANGELOG.md"],
+  "files": ["dist", "!dist/**/*.map", "LICENSE", "README.md", "CHANGELOG.md"],
   "sideEffects": false,
   "engines": {
     "node": ">=22"
