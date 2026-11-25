@@ -1,6 +1,6 @@
 // Flows as models: a published flow is called by naming its id as a call's model, and <flow id>@<version>
 // pins a published version. api.orbtr.ai reads a model that starts with "partition:" and holds ":flow:" as a
-// flow (cortex inference/bridge ParseFlowModel); any other model is a model id.
+// flow; any other model is a model id.
 
 /** Whether a model names a flow. */
 export function isFlowModel(model: string): boolean {

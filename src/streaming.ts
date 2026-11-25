@@ -145,7 +145,8 @@ export class Stream<T> implements AsyncIterable<T> {
   private readonly controller: AbortController;
   private readonly parse: (ev: ServerSentEvent) => ParseResult<T>;
   private readonly done: () => void;
-  private consumed = false;
+  /** Whether iteration has begun; a stream is read once. */
+  protected consumed = false;
 
   constructor(response: Response, controller: AbortController, parse: (ev: ServerSentEvent) => ParseResult<T>, done: () => void = () => {}) {
     this.response = response;
@@ -214,12 +215,9 @@ export class MessageStream extends Stream<MessageStreamEvent | ExtensionStreamEv
 
   /** Reads the rest of the stream and resolves to the whole reply. */
   async finalMessage(): Promise<Message> {
-    try {
-      for await (const _ of this) {
-        // Each event is gathered by observe.
-      }
-    } catch (err) {
-      if (!(err instanceof Error && err.message === "A stream can be iterated only once.")) throw err;
+    if (!this.consumed) {
+      // Iterating runs observe on each event, which gathers the reply.
+      for await (const _ of this);
     }
     if (!this.message) throw new StreamError(undefined, "The stream ended before message_start", undefined);
     return this.message;
