@@ -199,8 +199,6 @@ export interface Usage {
   assistant_version_hash?: string;
   /** How the assistant was chosen. */
   assistant_resolution_tier?: string;
-  /** The Space whose default chose the assistant. */
-  assistantResolutionSpaceId?: string;
   orbtr?: FlowRunUsage;
 }
 
@@ -281,8 +279,6 @@ export interface MessageDeltaUsage {
   assistant_version_hash?: string;
   /** How the assistant was chosen. */
   assistant_resolution_tier?: string;
-  /** The Space whose default chose the assistant. */
-  assistantResolutionSpaceId?: string;
   orbtr?: FlowRunUsage;
 }
 
@@ -301,7 +297,7 @@ export interface MessageStartEvent {
   message: Message;
 }
 
-/** A content block begins. */
+/** The start of a content block. */
 export interface ContentBlockStartEvent {
   /** Always content_block_start. */
   type: "content_block_start";
@@ -310,7 +306,7 @@ export interface ContentBlockStartEvent {
   content_block: ContentBlock;
 }
 
-/** A piece of a content block arrives. */
+/** A piece of a content block, as it arrives. */
 export interface ContentBlockDeltaEvent {
   /** Always content_block_delta. */
   type: "content_block_delta";
@@ -319,7 +315,7 @@ export interface ContentBlockDeltaEvent {
   delta: ContentBlockDelta;
 }
 
-/** A content block ends. */
+/** The end of a content block. */
 export interface ContentBlockStopEvent {
   /** Always content_block_stop. */
   type: "content_block_stop";
@@ -341,13 +337,13 @@ export interface MessageStopEvent {
   type: "message_stop";
 }
 
-/** Keeps the connection open. */
+/** An event that keeps the connection open. */
 export interface PingEvent {
   /** Always ping. */
   type: "ping";
 }
 
-/** The stream failed after it began. */
+/** A failure the stream reports after it began. */
 export interface ErrorEvent {
   /** Always error. */
   type: "error";

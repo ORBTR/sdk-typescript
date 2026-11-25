@@ -732,7 +732,8 @@
           "model",
           "messages"
         ],
-        "x-orbtr-source": "inference/wire/anthropic Request (inference/bridge CountTokens)"
+        "x-orbtr-source": "inference/wire/anthropic Request",
+        "x-orbtr-source-subset": true
       },
       "ContentBlock": {
         "type": "object",
@@ -916,10 +917,6 @@
             "type": "string",
             "description": "How the assistant was chosen."
           },
-          "assistantResolutionSpaceId": {
-            "type": "string",
-            "description": "The Space whose default chose the assistant."
-          },
           "orbtr": {
             "$ref": "#/components/schemas/FlowRunUsage"
           }
@@ -928,7 +925,10 @@
           "input_tokens",
           "output_tokens"
         ],
-        "x-orbtr-source": "inference/wire/anthropic Usage"
+        "x-orbtr-source": "inference/wire/anthropic Usage",
+        "x-orbtr-source-adds": [
+          "orbtr"
+        ]
       },
       "Message": {
         "type": "object",
@@ -1113,10 +1113,6 @@
             "type": "string",
             "description": "How the assistant was chosen."
           },
-          "assistantResolutionSpaceId": {
-            "type": "string",
-            "description": "The Space whose default chose the assistant."
-          },
           "orbtr": {
             "$ref": "#/components/schemas/FlowRunUsage"
           }
@@ -1164,7 +1160,7 @@
       },
       "ContentBlockStartEvent": {
         "type": "object",
-        "description": "A content block begins.",
+        "description": "The start of a content block.",
         "properties": {
           "type": {
             "type": "string",
@@ -1189,7 +1185,7 @@
       },
       "ContentBlockDeltaEvent": {
         "type": "object",
-        "description": "A piece of a content block arrives.",
+        "description": "A piece of a content block, as it arrives.",
         "properties": {
           "type": {
             "type": "string",
@@ -1214,7 +1210,7 @@
       },
       "ContentBlockStopEvent": {
         "type": "object",
-        "description": "A content block ends.",
+        "description": "The end of a content block.",
         "properties": {
           "type": {
             "type": "string",
@@ -1274,7 +1270,7 @@
       },
       "PingEvent": {
         "type": "object",
-        "description": "Keeps the connection open.",
+        "description": "An event that keeps the connection open.",
         "properties": {
           "type": {
             "type": "string",
@@ -1290,7 +1286,7 @@
       },
       "ErrorEvent": {
         "type": "object",
-        "description": "The stream failed after it began.",
+        "description": "A failure the stream reports after it began.",
         "properties": {
           "type": {
             "type": "string",
@@ -1382,7 +1378,7 @@
           "created",
           "owned_by"
         ],
-        "x-orbtr-source": "inference/api/bridge Models modelObj"
+        "x-orbtr-source": "inference/api/bridge modelObj"
       },
       "ModelList": {
         "type": "object",
@@ -1868,7 +1864,7 @@
             "description": "Part of the arguments' JSON text."
           }
         },
-        "x-orbtr-source": "inference/bridge openaiStreamToolCall"
+        "x-orbtr-source": "inference/bridge streamOpenAIChat"
       },
       "ChatCompletionChunkToolCall": {
         "type": "object",
