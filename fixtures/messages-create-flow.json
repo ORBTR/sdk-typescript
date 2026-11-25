@@ -1,0 +1,26 @@
+{
+  "name": "messages-create-flow",
+  "description": "A published flow called as a model, pinned to version 2.",
+  "recorded_from": "cortex 85959ecca12f46c7f2ccc6ce8aadbc02bfa37f49 inference/bridge Bridge.Messages (serveFlowModel)",
+  "request": {
+    "method": "POST",
+    "path": "/v1/messages",
+    "body": {
+      "model": "partition:p1:flow:council@2",
+      "max_tokens": 64,
+      "messages": [
+        {
+          "role": "user",
+          "content": "review this"
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{\"id\":\"msg_run1\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"partition:p1:flow:council@2\",\"content\":[{\"type\":\"text\",\"text\":\"the council agrees\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":0,\"output_tokens\":0,\"ot_consumed\":7,\"orbtr\":{\"kind\":\"flow\",\"flowId\":\"partition:p1:flow:council\",\"version\":2,\"runId\":\"run1\",\"totalOt\":7,\"steps\":[{\"stepId\":\"a\",\"modelId\":\"orbtr-small\",\"ot\":7,\"calls\":1},{\"stepId\":\"b\",\"modelId\":\"own-alias\",\"ot\":0,\"calls\":1}]}}}\n"
+  }
+}

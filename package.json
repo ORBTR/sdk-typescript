@@ -1,0 +1,38 @@
+{
+  "name": "@orbtr/sdk",
+  "version": "0.0.0",
+  "description": "The ORBTR SDK for TypeScript and JavaScript: messages, streaming, models, flows as models, token counting, embeddings and message batches on api.orbtr.ai.",
+  "license": "SEE LICENSE IN LICENSE",
+  "author": "ORBTR Pty Ltd",
+  "homepage": "https://docs.orbtr.ai/sdk/index",
+  "keywords": ["orbtr", "ai", "sdk", "llm", "api"],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist", "LICENSE", "README.md", "CHANGELOG.md"],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "generate": "node scripts/generate.mjs",
+    "check-generated": "node scripts/generate.mjs --check",
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && tsc -p tsconfig.json && node --test \"build-test/test/**/*.test.js\""
+  },
+  "devDependencies": {
+    "@types/node": "22.19.7",
+    "typescript": "5.9.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

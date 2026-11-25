@@ -1,0 +1,21 @@
+# Checks that every commit on a pull request begins with a conventional type (fix:, feat:, chore:, ci:,
+# docs:, refactor:, test:, perf:, or a breaking feat!:/fix!:), the types release-please.yml reads to pick the
+# next version and write CHANGELOG.md. The rules are .commitlintrc.json's.
+name: Commitlint
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+    # The release pull request changes only these files and is titled by pull-request-title-pattern in
+    # .github/release-please-config.json, so it starts no run.
+    paths-ignore:
+      - CHANGELOG.md
+      - .github/.release-please-manifest.json
+
+jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: wagoid/commitlint-github-action@v6

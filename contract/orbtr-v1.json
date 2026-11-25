@@ -1,0 +1,2349 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ORBTR API",
+    "version": "1",
+    "description": "api.orbtr.ai's /v1 inference surface, as its handlers serve it.",
+    "x-orbtr-source": {
+      "repository": "github.com/ORBTR/cortex",
+      "commit": "85959ecca12f46c7f2ccc6ce8aadbc02bfa37f49"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.orbtr.ai"
+    }
+  ],
+  "security": [
+    {
+      "bearer": []
+    }
+  ],
+  "paths": {
+    "/v1/messages": {
+      "post": {
+        "operationId": "messages.create",
+        "summary": "Send a message and receive the reply.",
+        "x-orbtr-resource": "messages",
+        "x-orbtr-method": "create",
+        "x-orbtr-scope": "orbtr.inference.invoke",
+        "x-orbtr-stream": {
+          "event": "#/components/schemas/MessageStreamEvent",
+          "framing": "anthropic"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageCreateParams"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Message"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/messages/count_tokens": {
+      "post": {
+        "operationId": "messages.countTokens",
+        "summary": "Count a request's input tokens without sending it.",
+        "x-orbtr-resource": "messages",
+        "x-orbtr-method": "countTokens",
+        "x-orbtr-scope": "orbtr.inference.read",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageCountTokensParams"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageTokensCount"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/models": {
+      "get": {
+        "operationId": "models.list",
+        "summary": "List the models a call may name.",
+        "x-orbtr-resource": "models",
+        "x-orbtr-method": "list",
+        "x-orbtr-scope": "orbtr.inference.read",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ModelList"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/embeddings": {
+      "post": {
+        "operationId": "embeddings.create",
+        "summary": "Embed text.",
+        "x-orbtr-resource": "embeddings",
+        "x-orbtr-method": "create",
+        "x-orbtr-scope": "orbtr.inference.invoke",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmbeddingCreateParams"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateEmbeddingResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/chat/completions": {
+      "post": {
+        "operationId": "chat.completions.create",
+        "summary": "Send an OpenAI-compatible chat request.",
+        "x-orbtr-resource": "chat.completions",
+        "x-orbtr-method": "create",
+        "x-orbtr-scope": "orbtr.inference.invoke",
+        "x-orbtr-stream": {
+          "event": "#/components/schemas/ChatCompletionChunk",
+          "framing": "openai"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatCompletionCreateParams"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatCompletion"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/completions": {
+      "post": {
+        "operationId": "completions.create",
+        "summary": "Send an OpenAI-compatible completion request.",
+        "x-orbtr-resource": "completions",
+        "x-orbtr-method": "create",
+        "x-orbtr-scope": "orbtr.inference.invoke",
+        "x-orbtr-stream": {
+          "event": "#/components/schemas/CompletionChunk",
+          "framing": "openai"
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompletionCreateParams"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Completion"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/messages/batches": {
+      "post": {
+        "operationId": "messages.batches.create",
+        "summary": "Create a message batch.",
+        "x-orbtr-resource": "messages.batches",
+        "x-orbtr-method": "create",
+        "x-orbtr-scope": "orbtr.messages.batch.create",
+        "x-orbtr-idempotency-key": true,
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageBatchCreateParams"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageBatch"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "messages.batches.list",
+        "summary": "List message batches, newest first.",
+        "x-orbtr-resource": "messages.batches",
+        "x-orbtr-method": "list",
+        "x-orbtr-scope": "orbtr.messages.batch.list",
+        "parameters": [
+          {
+            "name": "after_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Start after this batch."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The most batches to return."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageBatchList"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/messages/batches/{id}": {
+      "get": {
+        "operationId": "messages.batches.retrieve",
+        "summary": "Read one message batch.",
+        "x-orbtr-resource": "messages.batches",
+        "x-orbtr-method": "retrieve",
+        "x-orbtr-scope": "orbtr.messages.batch.read",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The batch's id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageBatch"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/messages/batches/{id}/cancel": {
+      "post": {
+        "operationId": "messages.batches.cancel",
+        "summary": "Cancel a message batch's unfinished requests.",
+        "x-orbtr-resource": "messages.batches",
+        "x-orbtr-method": "cancel",
+        "x-orbtr-scope": "orbtr.messages.batch.cancel",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The batch's id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageBatch"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/messages/batches/{id}/results": {
+      "get": {
+        "operationId": "messages.batches.results",
+        "summary": "Fetch a batch's results, one per request.",
+        "x-orbtr-resource": "messages.batches",
+        "x-orbtr-method": "results",
+        "x-orbtr-scope": "orbtr.messages.batch.results",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The batch's id."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/x-ndjson": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageBatchResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "An ORBTR API key."
+      }
+    },
+    "schemas": {
+      "ImageSource": {
+        "type": "object",
+        "description": "Where an image block's bytes come from.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "base64 for inline data, url for a fetched image.",
+            "enum": [
+              "base64",
+              "url"
+            ]
+          },
+          "media_type": {
+            "type": "string",
+            "description": "The image's media type, such as image/png."
+          },
+          "data": {
+            "type": "string",
+            "description": "The base64-encoded bytes, when type is base64."
+          },
+          "url": {
+            "type": "string",
+            "description": "The image's address, when type is url."
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "x-orbtr-source": "inference/wire/anthropic decodeBlock source"
+      },
+      "ContentBlockParam": {
+        "type": "object",
+        "description": "One block of a message's content.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "The block's kind.",
+            "enum": [
+              "text",
+              "image",
+              "tool_use",
+              "tool_result"
+            ]
+          },
+          "text": {
+            "type": "string",
+            "description": "The text of a text block."
+          },
+          "source": {
+            "$ref": "#/components/schemas/ImageSource"
+          },
+          "id": {
+            "type": "string",
+            "description": "A tool_use block's id."
+          },
+          "name": {
+            "type": "string",
+            "description": "A tool_use block's tool name."
+          },
+          "input": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "A tool_use block's input."
+          },
+          "tool_use_id": {
+            "type": "string",
+            "description": "The tool_use block a tool_result answers."
+          },
+          "content": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ContentBlockParam"
+                }
+              }
+            ],
+            "description": "A tool_result block's content."
+          },
+          "is_error": {
+            "type": "boolean",
+            "description": "Whether a tool_result reports a failure."
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "x-orbtr-source": "inference/wire/anthropic decodeBlock"
+      },
+      "TextBlockParam": {
+        "type": "object",
+        "description": "A text block of a system prompt.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Always text.",
+            "enum": [
+              "text"
+            ]
+          },
+          "text": {
+            "type": "string",
+            "description": "The text."
+          }
+        },
+        "required": [
+          "type",
+          "text"
+        ],
+        "x-orbtr-source": "inference/wire/anthropic Request.System"
+      },
+      "MessageParam": {
+        "type": "object",
+        "description": "One message of the conversation sent.",
+        "properties": {
+          "role": {
+            "type": "string",
+            "description": "Who wrote the message.",
+            "enum": [
+              "user",
+              "assistant"
+            ]
+          },
+          "content": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ContentBlockParam"
+                }
+              }
+            ],
+            "description": "The message's text, or its blocks."
+          }
+        },
+        "required": [
+          "role",
+          "content"
+        ],
+        "x-orbtr-source": "inference/wire/anthropic Message"
+      },
+      "ToolParam": {
+        "type": "object",
+        "description": "A tool the model may call.",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The tool's name."
+          },
+          "description": {
+            "type": "string",
+            "description": "What the tool does."
+          },
+          "input_schema": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "The JSON Schema of the tool's input."
+          }
+        },
+        "required": [
+          "name",
+          "input_schema"
+        ],
+        "x-orbtr-source": "inference/wire/anthropic Tool"
+      },
+      "ToolChoice": {
+        "type": "object",
+        "description": "How the model chooses a tool.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "auto lets the model decide, any requires a tool, tool requires the named one, none forbids tools.",
+            "enum": [
+              "auto",
+              "any",
+              "tool",
+              "none"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "description": "The tool to call, when type is tool."
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "x-orbtr-source": "inference/wire/anthropic Request.ToolChoice"
+      },
+      "MessageCreateParams": {
+        "type": "object",
+        "description": "The body of POST /v1/messages.",
+        "properties": {
+          "model": {
+            "type": "string",
+            "description": "A model id from GET /v1/models, or a published flow's id, optionally pinned as <flow id>@<version>."
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageParam"
+            },
+            "description": "The conversation, oldest first."
+          },
+          "max_tokens": {
+            "type": "integer",
+            "description": "The most tokens the reply may hold."
+          },
+          "system": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/TextBlockParam"
+                }
+              }
+            ],
+            "description": "The system prompt."
+          },
+          "stream": {
+            "type": "boolean",
+            "description": "Whether the reply arrives as server-sent events.",
+            "x-orbtr-stream-flag": true
+          },
+          "temperature": {
+            "type": "number",
+            "description": "Sampling temperature."
+          },
+          "top_p": {
+            "type": "number",
+            "description": "Nucleus sampling probability."
+          },
+          "top_k": {
+            "type": "integer",
+            "description": "Sample from the k most likely tokens."
+          },
+          "stop_sequences": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Text that ends the reply when generated."
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ToolParam"
+            },
+            "description": "Tools the model may call."
+          },
+          "tool_choice": {
+            "$ref": "#/components/schemas/ToolChoice"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Request metadata."
+          },
+          "depth_tier": {
+            "type": "string",
+            "description": "How deeply ORBTR's recurrent models think.",
+            "enum": [
+              "quick",
+              "standard",
+              "deep",
+              "adaptive"
+            ]
+          },
+          "max_loops": {
+            "type": "integer",
+            "description": "The most reasoning loops an adaptive turn may run."
+          },
+          "max_ot": {
+            "type": "integer",
+            "description": "The most OT the whole turn may spend; 0 leaves it uncapped."
+          },
+          "on_max_ot_hit": {
+            "type": "string",
+            "description": "What a turn that reaches max_ot answers: partial returns the work done, error refuses.",
+            "enum": [
+              "partial",
+              "error"
+            ]
+          }
+        },
+        "required": [
+          "model",
+          "messages"
+        ],
+        "x-orbtr-source": "inference/wire/anthropic Request"
+      },
+      "MessageCountTokensParams": {
+        "type": "object",
+        "description": "The body of POST /v1/messages/count_tokens: the request to count.",
+        "properties": {
+          "model": {
+            "type": "string",
+            "description": "The model whose tokenizer counts."
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageParam"
+            },
+            "description": "The conversation, oldest first."
+          },
+          "system": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/TextBlockParam"
+                }
+              }
+            ],
+            "description": "The system prompt."
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ToolParam"
+            },
+            "description": "Tools the request offers."
+          },
+          "tool_choice": {
+            "$ref": "#/components/schemas/ToolChoice"
+          },
+          "metadata": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Request metadata."
+          }
+        },
+        "required": [
+          "model",
+          "messages"
+        ],
+        "x-orbtr-source": "inference/wire/anthropic Request (inference/bridge CountTokens)"
+      },
+      "ContentBlock": {
+        "type": "object",
+        "description": "One block of a reply's content.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "The block's kind: text, tool_use or tool_result."
+          },
+          "text": {
+            "type": "string",
+            "description": "The text of a text block."
+          },
+          "id": {
+            "type": "string",
+            "description": "A tool_use block's id."
+          },
+          "name": {
+            "type": "string",
+            "description": "A tool_use block's tool name."
+          },
+          "input": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "A tool_use block's input."
+          },
+          "tool_use_id": {
+            "type": "string",
+            "description": "The tool_use block a tool_result answers."
+          },
+          "content": {
+            "type": "string",
+            "description": "A tool_result block's content."
+          },
+          "is_error": {
+            "type": "boolean",
+            "description": "Whether a tool_result reports a failure."
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "x-orbtr-source": "inference/wire/anthropic ResponseBlock"
+      },
+      "FlowStepUsage": {
+        "type": "object",
+        "description": "One step of a flow run's usage.",
+        "properties": {
+          "stepId": {
+            "type": "string",
+            "description": "The step's id in the flow."
+          },
+          "modelId": {
+            "type": "string",
+            "description": "The model the step named, when it named one."
+          },
+          "ot": {
+            "type": "integer",
+            "description": "The OT the step settled."
+          },
+          "calls": {
+            "type": "integer",
+            "description": "The model or assistant calls the step made."
+          }
+        },
+        "required": [
+          "stepId",
+          "ot",
+          "calls"
+        ],
+        "x-orbtr-source": "inference/bridge FlowStepUsage"
+      },
+      "FlowRunUsage": {
+        "type": "object",
+        "description": "The usage of a flow called as a model: the version that answered, the run and each step.",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "description": "Always flow."
+          },
+          "flowId": {
+            "type": "string",
+            "description": "The flow's id."
+          },
+          "version": {
+            "type": "integer",
+            "description": "The published version that answered."
+          },
+          "runId": {
+            "type": "string",
+            "description": "The flow run."
+          },
+          "totalOt": {
+            "type": "integer",
+            "description": "The run's total OT."
+          },
+          "steps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FlowStepUsage"
+            },
+            "description": "One line per step; the lines sum to totalOt."
+          }
+        },
+        "required": [
+          "kind",
+          "flowId",
+          "version",
+          "runId",
+          "totalOt",
+          "steps"
+        ],
+        "x-orbtr-source": "inference/bridge FlowModelUsage"
+      },
+      "Usage": {
+        "type": "object",
+        "description": "Tokens and OT a reply used.",
+        "properties": {
+          "input_tokens": {
+            "type": "integer",
+            "description": "Input tokens."
+          },
+          "output_tokens": {
+            "type": "integer",
+            "description": "Output tokens."
+          },
+          "ot_consumed": {
+            "type": "integer",
+            "description": "The OT the call settled."
+          },
+          "ot_gross_before_discount": {
+            "type": "integer",
+            "description": "The OT before any discount."
+          },
+          "cached_input_ot": {
+            "type": "integer",
+            "description": "The OT charged for cached input."
+          },
+          "fresh_input_ot": {
+            "type": "integer",
+            "description": "The OT charged for fresh input."
+          },
+          "ot_breakdown": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "The OT charged, line by line."
+          },
+          "display_currency": {
+            "type": "string",
+            "description": "The billing profile's display currency."
+          },
+          "display_money_micros": {
+            "type": "integer",
+            "description": "The money amount, in millionths of the display currency."
+          },
+          "reservation_id": {
+            "type": "string",
+            "description": "The OT reservation the call settled."
+          },
+          "loops_consumed": {
+            "type": "integer",
+            "description": "The reasoning loops an adaptive turn ran."
+          },
+          "billing_profile": {
+            "type": "string",
+            "description": "The billing profile charged."
+          },
+          "next_affinity_token": {
+            "type": "string",
+            "description": "A cache-affinity hint to send with the next turn."
+          },
+          "assistant_id": {
+            "type": "string",
+            "description": "The assistant that answered."
+          },
+          "assistant_version_hash": {
+            "type": "string",
+            "description": "The assistant version that answered."
+          },
+          "assistant_resolution_tier": {
+            "type": "string",
+            "description": "How the assistant was chosen."
+          },
+          "assistantResolutionSpaceId": {
+            "type": "string",
+            "description": "The Space whose default chose the assistant."
+          },
+          "orbtr": {
+            "$ref": "#/components/schemas/FlowRunUsage"
+          }
+        },
+        "required": [
+          "input_tokens",
+          "output_tokens"
+        ],
+        "x-orbtr-source": "inference/wire/anthropic Usage"
+      },
+      "Message": {
+        "type": "object",
+        "description": "A Messages reply.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The reply's id."
+          },
+          "type": {
+            "type": "string",
+            "description": "Always message."
+          },
+          "role": {
+            "type": "string",
+            "description": "Always assistant."
+          },
+          "model": {
+            "type": "string",
+            "description": "The model or flow that answered, as requested."
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContentBlock"
+            },
+            "description": "The reply's blocks."
+          },
+          "stop_reason": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Why the reply ended: end_turn, max_tokens, stop_sequence or tool_use."
+          },
+          "stop_sequence": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The stop sequence that ended the reply."
+          },
+          "usage": {
+            "$ref": "#/components/schemas/Usage"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "role",
+          "model",
+          "content",
+          "stop_reason",
+          "stop_sequence",
+          "usage"
+        ],
+        "x-orbtr-source": "inference/wire/anthropic Response"
+      },
+      "MessageTokensCount": {
+        "type": "object",
+        "description": "A request's input token count.",
+        "properties": {
+          "input_tokens": {
+            "type": "integer",
+            "description": "The request's input tokens."
+          }
+        },
+        "required": [
+          "input_tokens"
+        ],
+        "x-orbtr-source": "inference/bridge CountTokens"
+      },
+      "ContentBlockDelta": {
+        "type": "object",
+        "description": "A piece of a content block.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "text_delta carries text; input_json_delta carries part of a tool_use input."
+          },
+          "text": {
+            "type": "string",
+            "description": "The text, on a text_delta."
+          },
+          "partial_json": {
+            "type": "string",
+            "description": "Part of the tool input's JSON, on an input_json_delta."
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "x-orbtr-source": "inference/bridge streamAnthropicReply"
+      },
+      "MessageDelta": {
+        "type": "object",
+        "description": "How the reply ended.",
+        "properties": {
+          "stop_reason": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Why the reply ended."
+          },
+          "stop_sequence": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The stop sequence that ended the reply."
+          }
+        },
+        "x-orbtr-source": "inference/bridge streamAnthropicReply"
+      },
+      "MessageDeltaUsage": {
+        "type": "object",
+        "description": "The usage a message_delta reports.",
+        "properties": {
+          "input_tokens": {
+            "type": "integer",
+            "description": "Input tokens."
+          },
+          "output_tokens": {
+            "type": "integer",
+            "description": "Output tokens."
+          },
+          "ot_consumed": {
+            "type": "integer",
+            "description": "The OT the call settled."
+          },
+          "ot_gross_before_discount": {
+            "type": "integer",
+            "description": "The OT before any discount."
+          },
+          "cached_input_ot": {
+            "type": "integer",
+            "description": "The OT charged for cached input."
+          },
+          "fresh_input_ot": {
+            "type": "integer",
+            "description": "The OT charged for fresh input."
+          },
+          "ot_breakdown": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "The OT charged, line by line."
+          },
+          "display_currency": {
+            "type": "string",
+            "description": "The billing profile's display currency."
+          },
+          "display_money_micros": {
+            "type": "integer",
+            "description": "The money amount, in millionths of the display currency."
+          },
+          "reservation_id": {
+            "type": "string",
+            "description": "The OT reservation the call settled."
+          },
+          "loops_consumed": {
+            "type": "integer",
+            "description": "The reasoning loops an adaptive turn ran."
+          },
+          "billing_profile": {
+            "type": "string",
+            "description": "The billing profile charged."
+          },
+          "next_affinity_token": {
+            "type": "string",
+            "description": "A cache-affinity hint to send with the next turn."
+          },
+          "assistant_id": {
+            "type": "string",
+            "description": "The assistant that answered."
+          },
+          "assistant_version_hash": {
+            "type": "string",
+            "description": "The assistant version that answered."
+          },
+          "assistant_resolution_tier": {
+            "type": "string",
+            "description": "How the assistant was chosen."
+          },
+          "assistantResolutionSpaceId": {
+            "type": "string",
+            "description": "The Space whose default chose the assistant."
+          },
+          "orbtr": {
+            "$ref": "#/components/schemas/FlowRunUsage"
+          }
+        },
+        "x-orbtr-source": "inference/bridge streamAnthropicReply"
+      },
+      "ErrorDetail": {
+        "type": "object",
+        "description": "What went wrong.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "The error's code."
+          },
+          "message": {
+            "type": "string",
+            "description": "A readable description."
+          }
+        },
+        "required": [
+          "type",
+          "message"
+        ],
+        "x-orbtr-source": "inference/bridge writeAnthropicError"
+      },
+      "MessageStartEvent": {
+        "type": "object",
+        "description": "The stream's first event: the reply with no content yet.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Always message_start.",
+            "enum": [
+              "message_start"
+            ]
+          },
+          "message": {
+            "$ref": "#/components/schemas/Message"
+          }
+        },
+        "required": [
+          "type",
+          "message"
+        ]
+      },
+      "ContentBlockStartEvent": {
+        "type": "object",
+        "description": "A content block begins.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Always content_block_start.",
+            "enum": [
+              "content_block_start"
+            ]
+          },
+          "index": {
+            "type": "integer",
+            "description": "The block's position."
+          },
+          "content_block": {
+            "$ref": "#/components/schemas/ContentBlock"
+          }
+        },
+        "required": [
+          "type",
+          "index",
+          "content_block"
+        ]
+      },
+      "ContentBlockDeltaEvent": {
+        "type": "object",
+        "description": "A piece of a content block arrives.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Always content_block_delta.",
+            "enum": [
+              "content_block_delta"
+            ]
+          },
+          "index": {
+            "type": "integer",
+            "description": "The block's position."
+          },
+          "delta": {
+            "$ref": "#/components/schemas/ContentBlockDelta"
+          }
+        },
+        "required": [
+          "type",
+          "index",
+          "delta"
+        ]
+      },
+      "ContentBlockStopEvent": {
+        "type": "object",
+        "description": "A content block ends.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Always content_block_stop.",
+            "enum": [
+              "content_block_stop"
+            ]
+          },
+          "index": {
+            "type": "integer",
+            "description": "The block's position."
+          }
+        },
+        "required": [
+          "type",
+          "index"
+        ]
+      },
+      "MessageDeltaEvent": {
+        "type": "object",
+        "description": "The reply's ending and its usage.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Always message_delta.",
+            "enum": [
+              "message_delta"
+            ]
+          },
+          "delta": {
+            "$ref": "#/components/schemas/MessageDelta"
+          },
+          "usage": {
+            "$ref": "#/components/schemas/MessageDeltaUsage"
+          }
+        },
+        "required": [
+          "type",
+          "delta"
+        ]
+      },
+      "MessageStopEvent": {
+        "type": "object",
+        "description": "The stream's last event.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Always message_stop.",
+            "enum": [
+              "message_stop"
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "PingEvent": {
+        "type": "object",
+        "description": "Keeps the connection open.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Always ping.",
+            "enum": [
+              "ping"
+            ]
+          }
+        },
+        "required": [
+          "type"
+        ]
+      },
+      "ErrorEvent": {
+        "type": "object",
+        "description": "The stream failed after it began.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Always error.",
+            "enum": [
+              "error"
+            ]
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorDetail"
+          }
+        },
+        "required": [
+          "type",
+          "error"
+        ]
+      },
+      "MessageStreamEvent": {
+        "description": "One server-sent event of a streamed Messages reply. Events of a type not listed here, such as ORBTR's orbtr.ai.* progress events, are passed through with their type and data.",
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/MessageStartEvent"
+          },
+          {
+            "$ref": "#/components/schemas/ContentBlockStartEvent"
+          },
+          {
+            "$ref": "#/components/schemas/ContentBlockDeltaEvent"
+          },
+          {
+            "$ref": "#/components/schemas/ContentBlockStopEvent"
+          },
+          {
+            "$ref": "#/components/schemas/MessageDeltaEvent"
+          },
+          {
+            "$ref": "#/components/schemas/MessageStopEvent"
+          },
+          {
+            "$ref": "#/components/schemas/PingEvent"
+          },
+          {
+            "$ref": "#/components/schemas/ErrorEvent"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "type",
+          "mapping": {
+            "message_start": "#/components/schemas/MessageStartEvent",
+            "content_block_start": "#/components/schemas/ContentBlockStartEvent",
+            "content_block_delta": "#/components/schemas/ContentBlockDeltaEvent",
+            "content_block_stop": "#/components/schemas/ContentBlockStopEvent",
+            "message_delta": "#/components/schemas/MessageDeltaEvent",
+            "message_stop": "#/components/schemas/MessageStopEvent",
+            "ping": "#/components/schemas/PingEvent",
+            "error": "#/components/schemas/ErrorEvent"
+          }
+        },
+        "x-orbtr-source": "inference/bridge streamAnthropicReply, streamInference; inference/bridge/toolrouter EventName"
+      },
+      "Model": {
+        "type": "object",
+        "description": "A model a call may name.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The model's id, used as a call's model."
+          },
+          "object": {
+            "type": "string",
+            "description": "Always model."
+          },
+          "created": {
+            "type": "integer",
+            "description": "When the model was added, in Unix seconds."
+          },
+          "owned_by": {
+            "type": "string",
+            "description": "Who serves the model."
+          },
+          "context_length": {
+            "type": "integer",
+            "description": "The context window served, where known."
+          }
+        },
+        "required": [
+          "id",
+          "object",
+          "created",
+          "owned_by"
+        ],
+        "x-orbtr-source": "inference/api/bridge Models modelObj"
+      },
+      "ModelList": {
+        "type": "object",
+        "description": "The models a call may name.",
+        "properties": {
+          "object": {
+            "type": "string",
+            "description": "Always list."
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Model"
+            },
+            "description": "The models, sorted by id."
+          }
+        },
+        "required": [
+          "object",
+          "data"
+        ],
+        "x-orbtr-source": "inference/api/bridge Models"
+      },
+      "EmbeddingCreateParams": {
+        "type": "object",
+        "description": "The body of POST /v1/embeddings.",
+        "properties": {
+          "model": {
+            "type": "string",
+            "description": "The embedding model."
+          },
+          "input": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "The text to embed, or several texts."
+          },
+          "dimensions": {
+            "type": "integer",
+            "description": "The number of dimensions wanted, where the model can shorten its vectors."
+          }
+        },
+        "required": [
+          "model",
+          "input"
+        ],
+        "x-orbtr-source": "inference/bridge openaiEmbeddingsRequest"
+      },
+      "Embedding": {
+        "type": "object",
+        "description": "One input's vector.",
+        "properties": {
+          "object": {
+            "type": "string",
+            "description": "Always embedding."
+          },
+          "index": {
+            "type": "integer",
+            "description": "The input's position."
+          },
+          "embedding": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "description": "The vector."
+          }
+        },
+        "required": [
+          "object",
+          "index",
+          "embedding"
+        ],
+        "x-orbtr-source": "inference/bridge openaiEmbedding"
+      },
+      "EmbeddingUsage": {
+        "type": "object",
+        "description": "Tokens and OT an embeddings call used.",
+        "properties": {
+          "prompt_tokens": {
+            "type": "integer",
+            "description": "Input tokens."
+          },
+          "total_tokens": {
+            "type": "integer",
+            "description": "All tokens."
+          },
+          "ot_consumed": {
+            "type": "integer",
+            "description": "The OT the call settled."
+          },
+          "reservation_id": {
+            "type": "string",
+            "description": "The OT reservation the call settled."
+          }
+        },
+        "required": [
+          "prompt_tokens",
+          "total_tokens"
+        ],
+        "x-orbtr-source": "inference/bridge openaiEmbUsage"
+      },
+      "CreateEmbeddingResponse": {
+        "type": "object",
+        "description": "The vectors for each input.",
+        "properties": {
+          "object": {
+            "type": "string",
+            "description": "Always list."
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Embedding"
+            },
+            "description": "One vector per input, in input order."
+          },
+          "model": {
+            "type": "string",
+            "description": "The model that embedded."
+          },
+          "usage": {
+            "$ref": "#/components/schemas/EmbeddingUsage"
+          }
+        },
+        "required": [
+          "object",
+          "data",
+          "model",
+          "usage"
+        ],
+        "x-orbtr-source": "inference/bridge openaiEmbeddingsResponse"
+      },
+      "ChatContentPart": {
+        "type": "object",
+        "description": "One part of a chat message's content.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Always text.",
+            "enum": [
+              "text"
+            ]
+          },
+          "text": {
+            "type": "string",
+            "description": "The text."
+          }
+        },
+        "required": [
+          "type",
+          "text"
+        ],
+        "x-orbtr-source": "inference/bridge openaiChatMessage.Content"
+      },
+      "ChatMessageParam": {
+        "type": "object",
+        "description": "One chat message.",
+        "properties": {
+          "role": {
+            "type": "string",
+            "description": "Who wrote the message.",
+            "enum": [
+              "system",
+              "user",
+              "assistant",
+              "tool"
+            ]
+          },
+          "content": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ChatContentPart"
+                }
+              }
+            ],
+            "description": "The message's text, or its parts."
+          }
+        },
+        "required": [
+          "role",
+          "content"
+        ],
+        "x-orbtr-source": "inference/bridge openaiChatMessage"
+      },
+      "ChatFunctionParam": {
+        "type": "object",
+        "description": "A function the model may call.",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The function's name."
+          },
+          "description": {
+            "type": "string",
+            "description": "What the function does."
+          },
+          "parameters": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "The JSON Schema of the function's arguments."
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "x-orbtr-source": "inference/bridge openaiTool.Function"
+      },
+      "ChatToolParam": {
+        "type": "object",
+        "description": "A tool the model may call.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Always function.",
+            "enum": [
+              "function"
+            ]
+          },
+          "function": {
+            "$ref": "#/components/schemas/ChatFunctionParam"
+          }
+        },
+        "required": [
+          "type",
+          "function"
+        ],
+        "x-orbtr-source": "inference/bridge openaiTool"
+      },
+      "ChatCompletionCreateParams": {
+        "type": "object",
+        "description": "The body of POST /v1/chat/completions.",
+        "properties": {
+          "model": {
+            "type": "string",
+            "description": "A model id from GET /v1/models, or a published flow's id, optionally pinned as <flow id>@<version>."
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatMessageParam"
+            },
+            "description": "The conversation, oldest first."
+          },
+          "max_tokens": {
+            "type": "integer",
+            "description": "The most tokens the reply may hold."
+          },
+          "temperature": {
+            "type": "number",
+            "description": "Sampling temperature."
+          },
+          "top_p": {
+            "type": "number",
+            "description": "Nucleus sampling probability."
+          },
+          "stop": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "Text that ends the reply when generated."
+          },
+          "stream": {
+            "type": "boolean",
+            "description": "Whether the reply arrives as server-sent events.",
+            "x-orbtr-stream-flag": true
+          },
+          "tools": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatToolParam"
+            },
+            "description": "Tools the model may call."
+          }
+        },
+        "required": [
+          "model",
+          "messages"
+        ],
+        "x-orbtr-source": "inference/bridge openaiChatRequest"
+      },
+      "ChatCompletionFunctionCall": {
+        "type": "object",
+        "description": "The function a tool call names.",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The function's name."
+          },
+          "arguments": {
+            "type": "string",
+            "description": "The arguments, as JSON text."
+          }
+        },
+        "required": [
+          "name",
+          "arguments"
+        ],
+        "x-orbtr-source": "inference/bridge openaiToolCall.Function"
+      },
+      "ChatCompletionToolCall": {
+        "type": "object",
+        "description": "A tool call in a reply.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The call's id."
+          },
+          "type": {
+            "type": "string",
+            "description": "Always function."
+          },
+          "function": {
+            "$ref": "#/components/schemas/ChatCompletionFunctionCall"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "function"
+        ],
+        "x-orbtr-source": "inference/bridge openaiToolCall"
+      },
+      "ChatCompletionMessage": {
+        "type": "object",
+        "description": "A chat reply's message.",
+        "properties": {
+          "role": {
+            "type": "string",
+            "description": "Always assistant."
+          },
+          "content": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The reply's text."
+          },
+          "tool_calls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatCompletionToolCall"
+            },
+            "description": "The tools the reply calls."
+          }
+        },
+        "required": [
+          "role",
+          "content"
+        ],
+        "x-orbtr-source": "inference/bridge openaiRespMessage"
+      },
+      "ChatCompletionChoice": {
+        "type": "object",
+        "description": "One reply.",
+        "properties": {
+          "index": {
+            "type": "integer",
+            "description": "The choice's position."
+          },
+          "message": {
+            "$ref": "#/components/schemas/ChatCompletionMessage"
+          },
+          "finish_reason": {
+            "type": "string",
+            "description": "Why the reply ended."
+          }
+        },
+        "required": [
+          "index",
+          "message",
+          "finish_reason"
+        ],
+        "x-orbtr-source": "inference/bridge openaiChatChoice"
+      },
+      "ChatCompletionUsage": {
+        "type": "object",
+        "description": "Tokens and OT a chat call used.",
+        "properties": {
+          "prompt_tokens": {
+            "type": "integer",
+            "description": "Input tokens."
+          },
+          "completion_tokens": {
+            "type": "integer",
+            "description": "Output tokens."
+          },
+          "total_tokens": {
+            "type": "integer",
+            "description": "All tokens."
+          },
+          "ot_consumed": {
+            "type": "integer",
+            "description": "The OT the call settled."
+          },
+          "reservation_id": {
+            "type": "string",
+            "description": "The OT reservation the call settled."
+          },
+          "orbtr": {
+            "$ref": "#/components/schemas/FlowRunUsage"
+          }
+        },
+        "required": [
+          "prompt_tokens",
+          "completion_tokens",
+          "total_tokens"
+        ],
+        "x-orbtr-source": "inference/bridge openaiChatUsage"
+      },
+      "ChatCompletion": {
+        "type": "object",
+        "description": "An OpenAI-compatible chat reply.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The reply's id."
+          },
+          "object": {
+            "type": "string",
+            "description": "Always chat.completion."
+          },
+          "created": {
+            "type": "integer",
+            "description": "When the reply was made, in Unix seconds."
+          },
+          "model": {
+            "type": "string",
+            "description": "The model or flow that answered, as requested."
+          },
+          "choices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatCompletionChoice"
+            },
+            "description": "The replies."
+          },
+          "usage": {
+            "$ref": "#/components/schemas/ChatCompletionUsage"
+          }
+        },
+        "required": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "x-orbtr-source": "inference/bridge openaiChatResponse"
+      },
+      "ChatCompletionChunkFunctionCall": {
+        "type": "object",
+        "description": "Part of a streamed tool call's function.",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The function's name."
+          },
+          "arguments": {
+            "type": "string",
+            "description": "Part of the arguments' JSON text."
+          }
+        },
+        "x-orbtr-source": "inference/bridge openaiStreamToolCall"
+      },
+      "ChatCompletionChunkToolCall": {
+        "type": "object",
+        "description": "Part of a streamed tool call.",
+        "properties": {
+          "index": {
+            "type": "integer",
+            "description": "The tool call's position."
+          },
+          "id": {
+            "type": "string",
+            "description": "The call's id."
+          },
+          "type": {
+            "type": "string",
+            "description": "Always function."
+          },
+          "function": {
+            "$ref": "#/components/schemas/ChatCompletionChunkFunctionCall"
+          }
+        },
+        "required": [
+          "index"
+        ],
+        "x-orbtr-source": "inference/bridge openaiStreamToolCall"
+      },
+      "ChatCompletionChunkDelta": {
+        "type": "object",
+        "description": "What a chunk adds to the reply.",
+        "properties": {
+          "role": {
+            "type": "string",
+            "description": "The author, on the first chunk."
+          },
+          "content": {
+            "type": "string",
+            "description": "More of the reply's text."
+          },
+          "tool_calls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatCompletionChunkToolCall"
+            },
+            "description": "Parts of tool calls."
+          }
+        },
+        "x-orbtr-source": "inference/bridge streamOpenAIChat"
+      },
+      "ChatCompletionChunkChoice": {
+        "type": "object",
+        "description": "One reply's chunk.",
+        "properties": {
+          "index": {
+            "type": "integer",
+            "description": "The choice's position."
+          },
+          "delta": {
+            "$ref": "#/components/schemas/ChatCompletionChunkDelta"
+          },
+          "finish_reason": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Why the reply ended, on its last chunk."
+          }
+        },
+        "required": [
+          "index",
+          "delta",
+          "finish_reason"
+        ],
+        "x-orbtr-source": "inference/bridge streamOpenAIChat"
+      },
+      "ChatCompletionChunk": {
+        "type": "object",
+        "description": "One server-sent event of a streamed chat reply.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The reply's id."
+          },
+          "object": {
+            "type": "string",
+            "description": "Always chat.completion.chunk."
+          },
+          "created": {
+            "type": "integer",
+            "description": "When the reply was made, in Unix seconds."
+          },
+          "model": {
+            "type": "string",
+            "description": "The model or flow that answered, as requested."
+          },
+          "choices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ChatCompletionChunkChoice"
+            },
+            "description": "The replies' chunks."
+          }
+        },
+        "required": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices"
+        ],
+        "x-orbtr-source": "inference/bridge streamOpenAIChat"
+      },
+      "CompletionCreateParams": {
+        "type": "object",
+        "description": "The body of POST /v1/completions.",
+        "properties": {
+          "model": {
+            "type": "string",
+            "description": "A model id from GET /v1/models."
+          },
+          "prompt": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "The prompt; several strings are joined by newlines."
+          },
+          "max_tokens": {
+            "type": "integer",
+            "description": "The most tokens the reply may hold."
+          },
+          "temperature": {
+            "type": "number",
+            "description": "Sampling temperature."
+          },
+          "top_p": {
+            "type": "number",
+            "description": "Nucleus sampling probability."
+          },
+          "stop": {
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "description": "Text that ends the reply when generated."
+          },
+          "stream": {
+            "type": "boolean",
+            "description": "Whether the reply arrives as server-sent events.",
+            "x-orbtr-stream-flag": true
+          }
+        },
+        "required": [
+          "model",
+          "prompt"
+        ],
+        "x-orbtr-source": "inference/bridge openaiCompletionRequest"
+      },
+      "CompletionChoice": {
+        "type": "object",
+        "description": "One completion.",
+        "properties": {
+          "index": {
+            "type": "integer",
+            "description": "The choice's position."
+          },
+          "text": {
+            "type": "string",
+            "description": "The completion's text."
+          },
+          "logprobs": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Always null."
+          },
+          "finish_reason": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Why the completion ended."
+          }
+        },
+        "required": [
+          "index",
+          "text",
+          "logprobs",
+          "finish_reason"
+        ],
+        "x-orbtr-source": "inference/bridge openaiCompletionChoice"
+      },
+      "Completion": {
+        "type": "object",
+        "description": "An OpenAI-compatible completion.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The completion's id."
+          },
+          "object": {
+            "type": "string",
+            "description": "Always text_completion."
+          },
+          "created": {
+            "type": "integer",
+            "description": "When the completion was made, in Unix seconds."
+          },
+          "model": {
+            "type": "string",
+            "description": "The model that answered."
+          },
+          "choices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompletionChoice"
+            },
+            "description": "The completions."
+          },
+          "usage": {
+            "$ref": "#/components/schemas/ChatCompletionUsage"
+          }
+        },
+        "required": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices",
+          "usage"
+        ],
+        "x-orbtr-source": "inference/bridge openaiCompletionResponse"
+      },
+      "CompletionChunk": {
+        "type": "object",
+        "description": "One server-sent event of a streamed completion.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The completion's id."
+          },
+          "object": {
+            "type": "string",
+            "description": "Always text_completion."
+          },
+          "created": {
+            "type": "integer",
+            "description": "When the completion was made, in Unix seconds."
+          },
+          "model": {
+            "type": "string",
+            "description": "The model that answered."
+          },
+          "choices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompletionChoice"
+            },
+            "description": "The completions' chunks."
+          }
+        },
+        "required": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices"
+        ],
+        "x-orbtr-source": "inference/bridge streamOpenAICompletion"
+      },
+      "MessageBatchRequest": {
+        "type": "object",
+        "description": "One request of a batch.",
+        "properties": {
+          "custom_id": {
+            "type": "string",
+            "description": "Your id for the request, unique in the batch; its result carries it."
+          },
+          "params": {
+            "$ref": "#/components/schemas/MessageCreateParams"
+          }
+        },
+        "required": [
+          "custom_id",
+          "params"
+        ],
+        "x-orbtr-source": "inference/messages_batch/bridge innerBatchRequest"
+      },
+      "MessageBatchCreateParams": {
+        "type": "object",
+        "description": "The body of POST /v1/messages/batches.",
+        "properties": {
+          "requests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageBatchRequest"
+            },
+            "description": "The requests to run."
+          }
+        },
+        "required": [
+          "requests"
+        ],
+        "x-orbtr-source": "inference/messages_batch/bridge createBatchBody"
+      },
+      "MessageBatchRequestCounts": {
+        "type": "object",
+        "description": "How many of a batch's requests are in each state.",
+        "properties": {
+          "processing": {
+            "type": "integer",
+            "description": "Requests still running."
+          },
+          "succeeded": {
+            "type": "integer",
+            "description": "Requests that answered."
+          },
+          "errored": {
+            "type": "integer",
+            "description": "Requests that failed."
+          },
+          "canceled": {
+            "type": "integer",
+            "description": "Requests cancelled before they ran."
+          },
+          "expired": {
+            "type": "integer",
+            "description": "Requests that expired before they ran."
+          }
+        },
+        "required": [
+          "processing",
+          "succeeded",
+          "errored",
+          "canceled",
+          "expired"
+        ],
+        "x-orbtr-source": "inference/messages_batch/bridge batchObject"
+      },
+      "MessageBatch": {
+        "type": "object",
+        "description": "A message batch.",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The batch's id."
+          },
+          "type": {
+            "type": "string",
+            "description": "Always message_batch."
+          },
+          "processing_status": {
+            "type": "string",
+            "description": "in_progress, canceling or ended."
+          },
+          "request_counts": {
+            "$ref": "#/components/schemas/MessageBatchRequestCounts"
+          },
+          "created_at": {
+            "type": "string",
+            "description": "When the batch was created (RFC 3339)."
+          },
+          "expires_at": {
+            "type": "string",
+            "description": "When unfinished requests expire (RFC 3339)."
+          },
+          "ended_at": {
+            "type": "string",
+            "description": "When the batch ended (RFC 3339)."
+          },
+          "cancel_initiated_at": {
+            "type": "string",
+            "description": "When a cancel was asked for (RFC 3339)."
+          },
+          "archived_at": {
+            "type": "string",
+            "description": "When the batch was archived (RFC 3339)."
+          },
+          "results_url": {
+            "type": "string",
+            "description": "Where the batch's results are fetched."
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "processing_status",
+          "request_counts",
+          "created_at",
+          "expires_at"
+        ],
+        "x-orbtr-source": "inference/messages_batch/bridge batchObject"
+      },
+      "MessageBatchList": {
+        "type": "object",
+        "description": "A page of message batches.",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageBatch"
+            },
+            "description": "The batches."
+          },
+          "has_more": {
+            "type": "boolean",
+            "description": "Whether more batches follow the last one."
+          },
+          "first_id": {
+            "type": "string",
+            "description": "The first batch's id, to page back from."
+          },
+          "last_id": {
+            "type": "string",
+            "description": "The last batch's id; pass it as after_id for the next page."
+          }
+        },
+        "required": [
+          "data",
+          "has_more"
+        ],
+        "x-orbtr-source": "inference/messages_batch/bridge HandleList"
+      },
+      "MessageBatchResultBody": {
+        "type": "object",
+        "description": "How one request of a batch ended.",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "succeeded, errored, canceled or expired."
+          },
+          "message": {
+            "$ref": "#/components/schemas/Message"
+          },
+          "error": {
+            "$ref": "#/components/schemas/ErrorDetail"
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "x-orbtr-source": "inference/messages_batch/processor renderSucceededLine, completeError"
+      },
+      "MessageBatchResult": {
+        "type": "object",
+        "description": "One line of a batch's results.",
+        "properties": {
+          "custom_id": {
+            "type": "string",
+            "description": "The request's custom_id."
+          },
+          "result": {
+            "$ref": "#/components/schemas/MessageBatchResultBody"
+          }
+        },
+        "required": [
+          "custom_id",
+          "result"
+        ],
+        "x-orbtr-source": "inference/messages_batch/processor renderSucceededLine"
+      }
+    }
+  }
+}

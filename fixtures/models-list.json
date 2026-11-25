@@ -1,0 +1,16 @@
+{
+  "name": "models-list",
+  "description": "The model list.",
+  "recorded_from": "cortex 85959ecca12f46c7f2ccc6ce8aadbc02bfa37f49 inference/api/bridge Models",
+  "request": {
+    "method": "GET",
+    "path": "/v1/models"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{\"object\":\"list\",\"data\":[{\"id\":\"orbtr-embed-1\",\"object\":\"model\",\"created\":0,\"owned_by\":\"orbtr\"},{\"id\":\"orbtr-model-1\",\"object\":\"model\",\"created\":0,\"owned_by\":\"orbtr\",\"context_length\":131072},{\"id\":\"orbtr-model-2\",\"object\":\"model\",\"created\":0,\"owned_by\":\"orbtr\",\"context_length\":8192}]}\n"
+  }
+}

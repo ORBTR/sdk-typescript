@@ -1,0 +1,29 @@
+{
+  "name": "messages-stream-flow",
+  "description": "A streamed call to a flow, rendered at the run's end.",
+  "recorded_from": "cortex 85959ecca12f46c7f2ccc6ce8aadbc02bfa37f49 inference/bridge Bridge.Messages (serveFlowModel)",
+  "request": {
+    "method": "POST",
+    "path": "/v1/messages",
+    "body": {
+      "model": "partition:p1:flow:council",
+      "max_tokens": 64,
+      "stream": true,
+      "messages": [
+        {
+          "role": "user",
+          "content": "review this"
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Cache-Control": "no-cache",
+      "Connection": "keep-alive",
+      "Content-Type": "text/event-stream"
+    },
+    "body": "event: message_start\ndata: {\"message\":{\"content\":[],\"id\":\"msg_run1\",\"model\":\"partition:p1:flow:council\",\"role\":\"assistant\",\"stop_reason\":null,\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"input_tokens\":0,\"output_tokens\":0}},\"type\":\"message_start\"}\n\nevent: content_block_start\ndata: {\"content_block\":{\"text\":\"\",\"type\":\"text\"},\"index\":0,\"type\":\"content_block_start\"}\n\nevent: content_block_delta\ndata: {\"delta\":{\"text\":\"the council agrees\",\"type\":\"text_delta\"},\"index\":0,\"type\":\"content_block_delta\"}\n\nevent: content_block_stop\ndata: {\"index\":0,\"type\":\"content_block_stop\"}\n\nevent: message_delta\ndata: {\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"type\":\"message_delta\",\"usage\":{\"input_tokens\":0,\"output_tokens\":0,\"ot_consumed\":7,\"orbtr\":{\"kind\":\"flow\",\"flowId\":\"partition:p1:flow:council\",\"version\":2,\"runId\":\"run1\",\"totalOt\":7,\"steps\":[{\"stepId\":\"a\",\"modelId\":\"orbtr-small\",\"ot\":7,\"calls\":1},{\"stepId\":\"b\",\"modelId\":\"own-alias\",\"ot\":0,\"calls\":1}]}}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n"
+  }
+}

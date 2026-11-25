@@ -1,0 +1,29 @@
+{
+  "name": "chat-completions-create",
+  "description": "An OpenAI-compatible chat completion on a model.",
+  "recorded_from": "cortex 85959ecca12f46c7f2ccc6ce8aadbc02bfa37f49 inference/bridge Bridge.OpenAIChatCompletions",
+  "request": {
+    "method": "POST",
+    "path": "/v1/chat/completions",
+    "body": {
+      "model": "orbtr-model-1",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Write one sentence about the sea."
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json",
+      "X-Admission-Decision": "admit",
+      "X-Admission-Lease": "lease_sdk",
+      "X-Admission-Pressure": "0.0000",
+      "X-Admission-Qos-Class": "interactive"
+    },
+    "body": "{\"id\":\"msg_sdk_01\",\"object\":\"chat.completion\",\"created\":1795607463,\"model\":\"orbtr-model-1\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"The sea is wide and grey.\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":14,\"completion_tokens\":9,\"total_tokens\":23,\"ot_consumed\":12,\"reservation_id\":\"res_sdk_1\"}}\n"
+  }
+}

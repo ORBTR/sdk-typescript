@@ -1,0 +1,26 @@
+{
+  "name": "error-flow-not-found",
+  "description": "A flow id the caller cannot read answers 404.",
+  "recorded_from": "cortex 85959ecca12f46c7f2ccc6ce8aadbc02bfa37f49 inference/bridge Bridge.Messages (serveFlowModel)",
+  "request": {
+    "method": "POST",
+    "path": "/v1/messages",
+    "body": {
+      "model": "partition:p1:flow:unknown",
+      "max_tokens": 64,
+      "messages": [
+        {
+          "role": "user",
+          "content": "review this"
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 404,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{\"error\":{\"message\":\"model: partition:p1:flow:unknown\",\"type\":\"not_found_error\"},\"type\":\"error\"}\n"
+  }
+}

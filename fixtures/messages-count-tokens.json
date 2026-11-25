@@ -1,0 +1,25 @@
+{
+  "name": "messages-count-tokens",
+  "description": "Counting a request's input tokens.",
+  "recorded_from": "cortex 85959ecca12f46c7f2ccc6ce8aadbc02bfa37f49 inference/bridge Bridge.CountTokens",
+  "request": {
+    "method": "POST",
+    "path": "/v1/messages/count_tokens",
+    "body": {
+      "model": "orbtr-model-1",
+      "messages": [
+        {
+          "role": "user",
+          "content": "How long is this request?"
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{\"input_tokens\":14}\n"
+  }
+}

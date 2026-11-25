@@ -1,0 +1,25 @@
+{
+  "name": "chat-completions-create-flow",
+  "description": "A published flow called as a model on the OpenAI-compatible route.",
+  "recorded_from": "cortex 85959ecca12f46c7f2ccc6ce8aadbc02bfa37f49 inference/bridge Bridge.OpenAIChatCompletions (serveFlowModel)",
+  "request": {
+    "method": "POST",
+    "path": "/v1/chat/completions",
+    "body": {
+      "model": "partition:p1:flow:council",
+      "messages": [
+        {
+          "role": "user",
+          "content": "review this"
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{\"id\":\"chatcmpl-run1\",\"object\":\"chat.completion\",\"created\":1795607463,\"model\":\"partition:p1:flow:council\",\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\",\"content\":\"the council agrees\"},\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":0,\"completion_tokens\":0,\"total_tokens\":0,\"ot_consumed\":7,\"orbtr\":{\"kind\":\"flow\",\"flowId\":\"partition:p1:flow:council\",\"version\":2,\"runId\":\"run1\",\"totalOt\":7,\"steps\":[{\"stepId\":\"a\",\"modelId\":\"orbtr-small\",\"ot\":7,\"calls\":1},{\"stepId\":\"b\",\"modelId\":\"own-alias\",\"ot\":0,\"calls\":1}]}}}\n"
+  }
+}

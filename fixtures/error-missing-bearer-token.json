@@ -1,0 +1,16 @@
+{
+  "name": "error-missing-bearer-token",
+  "description": "The API-key tier refuses a call that carries no Authorization: Bearer header.",
+  "recorded_from": "cortex 85959ecca12f46c7f2ccc6ce8aadbc02bfa37f49 credential/api_key/store Store.RequireAPIKey",
+  "request": {
+    "method": "GET",
+    "path": "/v1/models"
+  },
+  "response": {
+    "status": 401,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{\"error\":\"missing_bearer_token\"}"
+  }
+}

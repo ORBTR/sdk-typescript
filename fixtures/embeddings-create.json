@@ -1,0 +1,23 @@
+{
+  "name": "embeddings-create",
+  "description": "Embeddings for two inputs.",
+  "recorded_from": "cortex 85959ecca12f46c7f2ccc6ce8aadbc02bfa37f49 inference/bridge Bridge.Embeddings",
+  "request": {
+    "method": "POST",
+    "path": "/v1/embeddings",
+    "body": {
+      "model": "orbtr-embed-1",
+      "input": [
+        "the sea",
+        "the sky"
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{\"object\":\"list\",\"data\":[{\"object\":\"embedding\",\"index\":0,\"embedding\":[0.25,-0.5,0.125]},{\"object\":\"embedding\",\"index\":1,\"embedding\":[0.5,0.25,-0.125]}],\"model\":\"orbtr-embed-1\",\"usage\":{\"prompt_tokens\":6,\"total_tokens\":6,\"ot_consumed\":7,\"reservation_id\":\"res_1\"}}\n"
+  }
+}

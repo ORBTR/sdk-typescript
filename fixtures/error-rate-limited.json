@@ -1,0 +1,29 @@
+{
+  "name": "error-rate-limited",
+  "description": "Admission refuses a turn over the partition's in-flight limit.",
+  "recorded_from": "cortex 85959ecca12f46c7f2ccc6ce8aadbc02bfa37f49 inference/bridge Bridge.Messages (admission)",
+  "request": {
+    "method": "POST",
+    "path": "/v1/messages",
+    "body": {
+      "model": "orbtr-model-1",
+      "max_tokens": 256,
+      "messages": [
+        {
+          "role": "user",
+          "content": "Write one sentence about the sea."
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 429,
+    "headers": {
+      "Content-Type": "application/json",
+      "X-Admission-Decision": "reject",
+      "X-Admission-Pressure": "0.0000",
+      "X-Admission-Reject-Reason": "partition_inflight_exceeded"
+    },
+    "body": "{\"error\":{\"message\":\"too many concurrent inference requests for this partition\",\"type\":\"partition_inflight_exceeded\"},\"type\":\"error\"}\n"
+  }
+}

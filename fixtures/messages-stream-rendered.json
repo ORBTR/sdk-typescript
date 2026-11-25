@@ -1,0 +1,33 @@
+{
+  "name": "messages-stream-rendered",
+  "description": "A streamed Messages turn rendered as one SSE sequence after a unary dispatch.",
+  "recorded_from": "cortex 85959ecca12f46c7f2ccc6ce8aadbc02bfa37f49 inference/bridge Bridge.Messages (streamAnthropicResponse)",
+  "request": {
+    "method": "POST",
+    "path": "/v1/messages",
+    "body": {
+      "model": "orbtr-model-1",
+      "max_tokens": 256,
+      "stream": true,
+      "messages": [
+        {
+          "role": "user",
+          "content": "Write one sentence about the sea."
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Cache-Control": "no-cache",
+      "Connection": "keep-alive",
+      "Content-Type": "text/event-stream",
+      "X-Admission-Decision": "admit",
+      "X-Admission-Lease": "lease_sdk",
+      "X-Admission-Pressure": "0.0000",
+      "X-Admission-Qos-Class": "interactive"
+    },
+    "body": "event: message_start\ndata: {\"message\":{\"content\":[],\"id\":\"msg_sdk_01\",\"model\":\"orbtr-model-1\",\"role\":\"assistant\",\"stop_reason\":null,\"stop_sequence\":null,\"type\":\"message\",\"usage\":{\"input_tokens\":14,\"output_tokens\":0}},\"type\":\"message_start\"}\n\nevent: content_block_start\ndata: {\"content_block\":{\"text\":\"\",\"type\":\"text\"},\"index\":0,\"type\":\"content_block_start\"}\n\nevent: content_block_delta\ndata: {\"delta\":{\"text\":\"The sea is wide and grey.\",\"type\":\"text_delta\"},\"index\":0,\"type\":\"content_block_delta\"}\n\nevent: content_block_stop\ndata: {\"index\":0,\"type\":\"content_block_stop\"}\n\nevent: message_delta\ndata: {\"delta\":{\"stop_reason\":\"end_turn\",\"stop_sequence\":null},\"type\":\"message_delta\",\"usage\":{\"input_tokens\":14,\"output_tokens\":9,\"ot_consumed\":12,\"reservation_id\":\"res_sdk_1\",\"billing_profile\":\"bp_1\"}}\n\nevent: message_stop\ndata: {\"type\":\"message_stop\"}\n\n"
+  }
+}

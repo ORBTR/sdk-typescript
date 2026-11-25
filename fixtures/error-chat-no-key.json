@@ -1,0 +1,25 @@
+{
+  "name": "error-chat-no-key",
+  "description": "An OpenAI-compatible call with no API-key identity answers the OpenAI error shape.",
+  "recorded_from": "cortex 85959ecca12f46c7f2ccc6ce8aadbc02bfa37f49 inference/bridge Bridge.OpenAIChatCompletions",
+  "request": {
+    "method": "POST",
+    "path": "/v1/chat/completions",
+    "body": {
+      "model": "orbtr-model-1",
+      "messages": [
+        {
+          "role": "user",
+          "content": "hi"
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 401,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{\"error\":{\"code\":null,\"message\":\"missing API-key identity\",\"param\":null,\"type\":\"authentication_error\"}}\n"
+  }
+}

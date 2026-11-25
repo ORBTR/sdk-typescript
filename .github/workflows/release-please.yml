@@ -1,0 +1,32 @@
+# Keeps one release pull request open over main's conventional commits: it bumps package.json's,
+# package-lock.json's and src/version.ts's version (fix: the patch, feat: the minor; below 1.0 a breaking
+# change the minor) and writes CHANGELOG.md, as .github/release-please-config.json and the version manifest
+# beside it say. Merging that pull request tags v<version> and creates the GitHub release, which release.yml
+# then builds and publishes.
+name: Release Please
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+  actions: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          config-file: .github/release-please-config.json
+          manifest-file: .github/.release-please-manifest.json
+
+      # A tag pushed with this workflow's token starts no other workflow, so the release is run here.
+      - name: Run the release workflow on the new tag
+        if: ${{ steps.release.outputs.release_created }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.release.outputs.tag_name }}
+        run: gh workflow run release.yml --repo "$GITHUB_REPOSITORY" --ref "$TAG"

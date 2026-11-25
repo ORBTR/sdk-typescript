@@ -1,0 +1,30 @@
+{
+  "name": "messages-create",
+  "description": "A unary Messages turn on a model.",
+  "recorded_from": "cortex 85959ecca12f46c7f2ccc6ce8aadbc02bfa37f49 inference/bridge Bridge.Messages",
+  "request": {
+    "method": "POST",
+    "path": "/v1/messages",
+    "body": {
+      "model": "orbtr-model-1",
+      "max_tokens": 256,
+      "messages": [
+        {
+          "role": "user",
+          "content": "Write one sentence about the sea."
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json",
+      "X-Admission-Decision": "admit",
+      "X-Admission-Lease": "lease_sdk",
+      "X-Admission-Pressure": "0.0000",
+      "X-Admission-Qos-Class": "interactive"
+    },
+    "body": "{\"id\":\"msg_sdk_01\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"orbtr-model-1\",\"content\":[{\"type\":\"text\",\"text\":\"The sea is wide and grey.\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":14,\"output_tokens\":9,\"ot_consumed\":12,\"reservation_id\":\"res_sdk_1\",\"billing_profile\":\"bp_1\"}}\n"
+  }
+}

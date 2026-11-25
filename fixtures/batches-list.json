@@ -1,0 +1,17 @@
+{
+  "name": "batches-list",
+  "description": "Listing message batches.",
+  "recorded_from": "cortex 85959ecca12f46c7f2ccc6ce8aadbc02bfa37f49 inference/messages_batch/bridge RegisterRoutes",
+  "request": {
+    "method": "GET",
+    "path": "/v1/messages/batches",
+    "query": "limit=20"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{\"data\":[{\"created_at\":\"2023-11-14T22:13:20Z\",\"ended_at\":\"2023-11-14T23:13:20Z\",\"expires_at\":\"2023-11-15T22:13:20Z\",\"id\":\"msgbatch_sdk_01\",\"processing_status\":\"ended\",\"request_counts\":{\"canceled\":0,\"errored\":1,\"expired\":0,\"processing\":0,\"succeeded\":1},\"results_url\":\"https://api.orbtr.ai/v1/messages/batches/msgbatch_sdk_01/results\",\"type\":\"message_batch\"}],\"first_id\":\"msgbatch_sdk_01\",\"has_more\":false,\"last_id\":\"msgbatch_sdk_01\"}\n"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "name": "batches-results",
+  "description": "A batch's results as NDJSON, one line per request.",
+  "recorded_from": "cortex 85959ecca12f46c7f2ccc6ce8aadbc02bfa37f49 inference/messages_batch/bridge RegisterRoutes",
+  "request": {
+    "method": "GET",
+    "path": "/v1/messages/batches/msgbatch_sdk_01/results"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/x-ndjson"
+    },
+    "body": "{\"custom_id\":\"first\",\"result\":{\"message\":{\"id\":\"msg_b1\",\"type\":\"message\",\"role\":\"assistant\",\"model\":\"orbtr-model-1\",\"content\":[{\"type\":\"text\",\"text\":\"Hello.\"}],\"stop_reason\":\"end_turn\",\"stop_sequence\":null,\"usage\":{\"input_tokens\":8,\"output_tokens\":2}},\"type\":\"succeeded\"}}\n{\"custom_id\":\"second\",\"result\":{\"error\":{\"message\":\"model not entitled\",\"type\":\"model_not_entitled\"},\"type\":\"errored\"}}\n"
+  }
+}

@@ -1,0 +1,27 @@
+# Builds and tests the package on each supported Node release: the unit tests against the recorded fixtures,
+# the integration test against the local fake of the /v1 surface, and the check that src/generated is what
+# contract/orbtr-v1.json generates.
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: ['22', '24', '26']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - run: npm run check-generated
+      - run: npm test

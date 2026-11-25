@@ -1,0 +1,32 @@
+{
+  "name": "chat-completions-stream",
+  "description": "A streamed OpenAI-compatible chat completion.",
+  "recorded_from": "cortex 85959ecca12f46c7f2ccc6ce8aadbc02bfa37f49 inference/bridge Bridge.OpenAIChatCompletions",
+  "request": {
+    "method": "POST",
+    "path": "/v1/chat/completions",
+    "body": {
+      "model": "orbtr-model-1",
+      "stream": true,
+      "messages": [
+        {
+          "role": "user",
+          "content": "Write one sentence about the sea."
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Cache-Control": "no-cache",
+      "Connection": "keep-alive",
+      "Content-Type": "text/event-stream",
+      "X-Admission-Decision": "admit",
+      "X-Admission-Lease": "lease_sdk",
+      "X-Admission-Pressure": "0.0000",
+      "X-Admission-Qos-Class": "interactive"
+    },
+    "body": "data: {\"choices\":[{\"delta\":{\"role\":\"assistant\"},\"finish_reason\":null,\"index\":0}],\"created\":1795607463,\"id\":\"msg_sdk_01\",\"model\":\"orbtr-model-1\",\"object\":\"chat.completion.chunk\"}\n\ndata: {\"choices\":[{\"delta\":{\"content\":\"The sea is wide and grey.\"},\"finish_reason\":null,\"index\":0}],\"created\":1795607463,\"id\":\"msg_sdk_01\",\"model\":\"orbtr-model-1\",\"object\":\"chat.completion.chunk\"}\n\ndata: {\"choices\":[{\"delta\":{},\"finish_reason\":\"stop\",\"index\":0}],\"created\":1795607463,\"id\":\"msg_sdk_01\",\"model\":\"orbtr-model-1\",\"object\":\"chat.completion.chunk\"}\n\ndata: [DONE]\n\n"
+  }
+}

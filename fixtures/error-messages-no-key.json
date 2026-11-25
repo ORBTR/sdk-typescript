@@ -1,0 +1,26 @@
+{
+  "name": "error-messages-no-key",
+  "description": "Messages with no API-key identity.",
+  "recorded_from": "cortex 85959ecca12f46c7f2ccc6ce8aadbc02bfa37f49 inference/bridge Bridge.Messages",
+  "request": {
+    "method": "POST",
+    "path": "/v1/messages",
+    "body": {
+      "model": "orbtr-model-1",
+      "max_tokens": 256,
+      "messages": [
+        {
+          "role": "user",
+          "content": "Write one sentence about the sea."
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 401,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": "{\"error\":{\"message\":\"missing API-key identity\",\"type\":\"authentication_error\"},\"type\":\"error\"}\n"
+  }
+}
