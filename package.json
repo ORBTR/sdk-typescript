@@ -1,11 +1,17 @@
 {
   "name": "@orbtr/sdk",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "The ORBTR SDK for TypeScript and JavaScript: messages, streaming, models, flows as models, token counting, embeddings and message batches on api.orbtr.ai.",
   "license": "SEE LICENSE IN LICENSE",
   "author": "ORBTR Pty Ltd",
   "homepage": "https://docs.orbtr.ai/sdk/index",
-  "keywords": ["orbtr", "ai", "sdk", "llm", "api"],
+  "keywords": [
+    "orbtr",
+    "ai",
+    "sdk",
+    "llm",
+    "api"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -16,7 +22,13 @@
     },
     "./package.json": "./package.json"
   },
-  "files": ["dist", "!dist/**/*.map", "LICENSE", "README.md", "CHANGELOG.md"],
+  "files": [
+    "dist",
+    "!dist/**/*.map",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
   "sideEffects": false,
   "engines": {
     "node": ">=22"
